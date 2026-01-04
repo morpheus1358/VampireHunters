@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "VampireSurvivorsClone.sln"
+    "dotnet.defaultSolution": "VampireHunters.sln"
 }
