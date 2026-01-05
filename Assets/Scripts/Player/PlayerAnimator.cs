@@ -37,11 +37,11 @@ public class PlayerAnimator : MonoBehaviour
 
     void SpriteDirectinChecker()
     {
-        if (pm.moveDir.x < 0)
+        if (pm.lastHorizontalVector < 0)
         {
             sr.flipX = true;
         }
-        else if (pm.moveDir.x > 0)
+        else
         {
             sr.flipX = false;
         }

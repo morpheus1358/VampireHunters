@@ -36,6 +36,15 @@ public class PlayerMovement : MonoBehaviour
 
         moveDir = new Vector2(moveX, moveY).normalized;
 
+        if (moveDir.x != 0)
+        {
+            lastHorizontalVector = moveDir.x;
+        }
+
+        if (moveDir.y != 0)
+        {
+            lastVerticalVector = moveDir.y;
+        }
 
     }
 
