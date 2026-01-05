@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float moveSpeed = 2f;
+    public float moveSpeed = 5f;
     public Vector2 moveDir;
     // Start is called before the first frame update
     void Start()
