@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         InputHandler();
+    }
+
+    void FixedUpdate()
+    {
         Move();
     }
 
@@ -36,5 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = new Vector2(moveDir.x * moveSpeed, moveDir.y * moveSpeed);
     }
+
+
 
 }
