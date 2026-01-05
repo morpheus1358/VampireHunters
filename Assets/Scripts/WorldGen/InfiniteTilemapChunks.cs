@@ -1,15 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class InfiniteTilemapChunks : MonoBehaviour
 {
-    [Header("Props")]
-    public GameObject[] propPrefabs;
-    [Range(0f, 0.2f)] public float propChance = 0.03f; // 3% per tile
-    public int maxPropsPerChunk = 25;
-    public Transform propsParent; // optional (empty GameObject)
-
     [Header("References")]
     public Transform player;
     public Tilemap tilemap;
@@ -28,6 +23,7 @@ public class InfiniteTilemapChunks : MonoBehaviour
 
     [Header("Noise / Randomness")]
     public int seed = 12345;
+
     [Tooltip("Bigger = larger patches, smaller = more speckle.")]
     public float noiseScale = 18f;
 
@@ -35,10 +31,29 @@ public class InfiniteTilemapChunks : MonoBehaviour
     [Range(0f, 1f)] public float thresholdB = 0.9f;
     // > thresholdB => C
 
+    [Header("Props")]
+    [Tooltip("Drop your 22 prop prefabs here.")]
+    public GameObject[] propPrefabs;
+
+    [Tooltip("Chance per tile to attempt placing a prop (0.03 = 3%).")]
+    [Range(0f, 0.2f)] public float propChance = 0.03f;
+
+    [Tooltip("Hard cap on props per chunk.")]
+    public int maxPropsPerChunk = 25;
+
+    [Tooltip("Optional parent to keep hierarchy clean (create empty 'Props' and assign).")]
+    public Transform propsParent;
+
+    [Tooltip("Small random offset so props don't look like perfect grid placement.")]
+    [Range(0f, 0.5f)] public float propJitter = 0.2f;
+
     private Vector2Int _currentPlayerChunk;
     private readonly HashSet<Vector2Int> _loadedChunks = new();
+
     private readonly List<Vector3Int> _positionsBuffer = new(32 * 32);
     private readonly List<TileBase> _tilesBuffer = new(32 * 32);
+
+    // Track spawned props per chunk so we can delete them when chunk unloads
     private readonly Dictionary<Vector2Int, List<GameObject>> _chunkProps = new();
 
     void Start()
@@ -66,7 +81,6 @@ public class InfiniteTilemapChunks : MonoBehaviour
 
     Vector2Int WorldToChunk(Vector3 worldPos)
     {
-        // Convert world -> cell -> chunk
         Vector3Int cell = tilemap.WorldToCell(worldPos);
         int cx = FloorDiv(cell.x, chunkSize);
         int cy = FloorDiv(cell.y, chunkSize);
@@ -75,7 +89,6 @@ public class InfiniteTilemapChunks : MonoBehaviour
 
     void UpdateLoadedChunks(bool force)
     {
-        // Determine which chunks should be loaded
         HashSet<Vector2Int> needed = new();
 
         for (int dy = -viewDistanceChunks; dy <= viewDistanceChunks; dy++)
@@ -92,12 +105,13 @@ public class InfiniteTilemapChunks : MonoBehaviour
             if (force || !_loadedChunks.Contains(c))
             {
                 GenerateChunk(c);
+                SpawnPropsForChunk(c);
+
                 _loadedChunks.Add(c);
             }
         }
 
-        // Unload far (clear tiles)
-        // Collect first to avoid modifying set while iterating
+        // Unload chunks not needed
         List<Vector2Int> toRemove = null;
         foreach (var c in _loadedChunks)
         {
@@ -113,6 +127,8 @@ public class InfiniteTilemapChunks : MonoBehaviour
             foreach (var c in toRemove)
             {
                 ClearChunk(c);
+                ClearPropsForChunk(c);
+
                 _loadedChunks.Remove(c);
             }
         }
@@ -126,7 +142,6 @@ public class InfiniteTilemapChunks : MonoBehaviour
         int startX = chunkCoord.x * chunkSize;
         int startY = chunkCoord.y * chunkSize;
 
-        // We generate in cell coordinates
         for (int y = 0; y < chunkSize; y++)
         {
             for (int x = 0; x < chunkSize; x++)
@@ -165,9 +180,67 @@ public class InfiniteTilemapChunks : MonoBehaviour
         tilemap.SetTiles(_positionsBuffer.ToArray(), _tilesBuffer.ToArray());
     }
 
+    void SpawnPropsForChunk(Vector2Int chunkCoord)
+    {
+        // Avoid double-spawning if chunk regenerates for any reason
+        if (_chunkProps.ContainsKey(chunkCoord)) return;
+
+        if (propPrefabs == null || propPrefabs.Length == 0) return;
+        if (maxPropsPerChunk <= 0 || propChance <= 0f) return;
+
+        // Deterministic random per chunk (so props are stable)
+        int chunkSeed = seed ^ (chunkCoord.x * 73856093) ^ (chunkCoord.y * 19349663);
+        System.Random rng = new System.Random(chunkSeed);
+
+        int startX = chunkCoord.x * chunkSize;
+        int startY = chunkCoord.y * chunkSize;
+
+        int spawned = 0;
+        var list = new List<GameObject>(Mathf.Min(maxPropsPerChunk, 64));
+        _chunkProps[chunkCoord] = list;
+
+        // Optional: you can bias prop placement using noise too.
+        // For now: simple chance per tile until max reached.
+        for (int y = 0; y < chunkSize && spawned < maxPropsPerChunk; y++)
+        {
+            for (int x = 0; x < chunkSize && spawned < maxPropsPerChunk; x++)
+            {
+                if (rng.NextDouble() > propChance) continue;
+
+                int cellX = startX + x;
+                int cellY = startY + y;
+
+                Vector3 worldPos = tilemap.GetCellCenterWorld(new Vector3Int(cellX, cellY, 0));
+
+                // Random prefab
+                var prefab = propPrefabs[rng.Next(propPrefabs.Length)];
+                if (!prefab) continue;
+
+                // Small jitter so it doesn't look like perfect grid
+                float jx = (float)(rng.NextDouble() - 0.5) * propJitter;
+                float jy = (float)(rng.NextDouble() - 0.5) * propJitter;
+
+                var go = Instantiate(prefab, worldPos + new Vector3(jx, jy, 0f), Quaternion.identity, propsParent);
+                list.Add(go);
+                spawned++;
+            }
+        }
+    }
+
+    void ClearPropsForChunk(Vector2Int chunkCoord)
+    {
+        if (_chunkProps.TryGetValue(chunkCoord, out var list))
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i]) Destroy(list[i]);
+            }
+            _chunkProps.Remove(chunkCoord);
+        }
+    }
+
     float SampleNoise(int x, int y)
     {
-        // Seed offsets so different worlds look different but stay consistent
         float sx = (x + seed * 0.0137f) / noiseScale;
         float sy = (y + seed * 0.0271f) / noiseScale;
         return Mathf.PerlinNoise(sx, sy);
@@ -180,7 +253,6 @@ public class InfiniteTilemapChunks : MonoBehaviour
         return grassC;
     }
 
-    // Correct floor division for negatives (so chunks work in all directions)
     int FloorDiv(int a, int b)
     {
         int q = a / b;

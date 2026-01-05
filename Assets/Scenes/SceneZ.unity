@@ -314,6 +314,33 @@ MonoBehaviour:
   noiseScale: 18
   thresholdA: 0.65
   thresholdB: 0.9
+  propPrefabs:
+  - {fileID: 8067853436588229538, guid: f118e025284d77047ab8bbaaedcd8355, type: 3}
+  - {fileID: 1788981554143541151, guid: f1e9e519648507f41b1b120a3738b7dd, type: 3}
+  - {fileID: 4669912877361756198, guid: 99377082fd152654087d8bb847c3be01, type: 3}
+  - {fileID: 6577913635427178867, guid: 01b2760ea7a5801439753326abdf0bc4, type: 3}
+  - {fileID: 2639092579499067030, guid: 763c67a8d241e4c4b907eefcbf965687, type: 3}
+  - {fileID: 717044060688166113, guid: f97338d325548c840a1c4cc74c1ff62c, type: 3}
+  - {fileID: 520320071530885439, guid: 2b3b089614540174bbf53147bd524447, type: 3}
+  - {fileID: 3493078945719228269, guid: 2d9491719dcbe7b41a1decffb3974c27, type: 3}
+  - {fileID: 468566596264423640, guid: f55678fb80ce157409f5ab544e132f4c, type: 3}
+  - {fileID: 9182150454654245965, guid: 2bc55b679cd825f4a94b3baa24cb7354, type: 3}
+  - {fileID: 6867318628898268457, guid: 0c79c6d4bd0324c4dbd0f0320ac0721e, type: 3}
+  - {fileID: 8873938307887874051, guid: c977a9d0e04d76f40ae0e1419dbec021, type: 3}
+  - {fileID: 2289964408688354746, guid: aba7df86ecd0a164c8767d0731bdcb03, type: 3}
+  - {fileID: 140585062088835961, guid: 3126d4b134c5ab5418fd43d77400701e, type: 3}
+  - {fileID: 1330919738764716897, guid: 59853bd9e63e90647997197f8e93dc58, type: 3}
+  - {fileID: 8580876250170505125, guid: 9270b69ff22252545b8abe671cc9dc4d, type: 3}
+  - {fileID: 439275807048232837, guid: 1b7580afcd578094ca864c8c40cee5b5, type: 3}
+  - {fileID: 4810895493907126900, guid: 7db0ef93791bfb940a180bcfc301eec7, type: 3}
+  - {fileID: 4775314703285573389, guid: 8867bb3047b99574ea6cbeec864e4bbb, type: 3}
+  - {fileID: 7558262870196854362, guid: c0113c5644386304fbb93f206cccfcd2, type: 3}
+  - {fileID: 6792279347067170954, guid: a5a2e000d00f5b8468cd6c5320de522c, type: 3}
+  - {fileID: 5019501099091166273, guid: 179f36d3ba551c442bb9132d27db1e3c, type: 3}
+  propChance: 0.03
+  maxPropsPerChunk: 25
+  propsParent: {fileID: 2079185100}
+  propJitter: 0.2
 --- !u!4 &1181840090
 Transform:
   m_ObjectHideFlags: 0
@@ -599,7 +626,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 779213793
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 1163464664, guid: b5df476924f28ef44b6c37d246b692c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -662,6 +689,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &2079185099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079185100}
+  m_Layer: 0
+  m_Name: Props
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2079185100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079185099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -102.94184, y: 147.92764, z: -1.5666746}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -670,3 +728,4 @@ SceneRoots:
   - {fileID: 1595970985}
   - {fileID: 97493692}
   - {fileID: 1181840090}
+  - {fileID: 2079185100}
