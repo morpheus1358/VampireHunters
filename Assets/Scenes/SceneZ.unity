@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 1595970981}
   - component: {fileID: 1595970986}
   - component: {fileID: 1595970987}
+  - component: {fileID: 1595970988}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -560,6 +561,7 @@ MonoBehaviour:
   moveDir: {x: 1, y: 1}
   lastHorizontalVector: 0
   lastVerticalVector: 0
+  lastMoveDir: {x: 1, y: 0}
 --- !u!50 &1595970983
 Rigidbody2D:
   serializedVersion: 4
@@ -626,7 +628,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 779213793
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 1163464664, guid: b5df476924f28ef44b6c37d246b692c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -689,6 +691,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1595970988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595970980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366f960efa2b32f4e9188473fb759d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: c324b08fa39606b47a457f447595b166, type: 2}
+  firePoint: {fileID: 1595970985}
 --- !u!1 &2079185099
 GameObject:
   m_ObjectHideFlags: 0

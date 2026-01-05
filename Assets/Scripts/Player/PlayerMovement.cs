@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 moveDir;
     public float lastHorizontalVector;
     public float lastVerticalVector;
+
+    public Vector2 lastMoveDir = Vector2.right;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,11 @@ public class PlayerMovement : MonoBehaviour
         if (moveDir.y != 0)
         {
             lastVerticalVector = moveDir.y;
+        }
+
+        if (moveDir.sqrMagnitude > 0.01f)
+        {
+            lastMoveDir = moveDir.normalized;
         }
 
     }

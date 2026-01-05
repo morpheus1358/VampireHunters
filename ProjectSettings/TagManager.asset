@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
   - 
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Props
     uniqueID: 104462493
+    locked: 0
+  - name: Projectile
+    uniqueID: 928142625
     locked: 0
   - name: Player
     uniqueID: 779213793
