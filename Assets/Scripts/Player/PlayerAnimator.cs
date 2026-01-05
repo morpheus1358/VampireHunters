@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
+
+
+    public Animator am;
+
+    public PlayerMovement pm;
+
+    SpriteRenderer sr;
     // Start is called before the first frame update
     void Start()
     {
-        
+        am = GetComponent<Animator>();
+        pm = GetComponentInParent<PlayerMovement>();
+        sr = GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (pm.moveDir.x != 0 || pm.moveDir.y != 0)
+        {
+            am.SetBool("Move", true);
+            SpriteDirectinChecker();
+        }
+        else
+        {
+            am.SetBool("Move", false);
+        }
+
+    }
+
+    void SpriteDirectinChecker()
+    {
+        if (pm.moveDir.x < 0)
+        {
+            sr.flipX = true;
+        }
+        else if (pm.moveDir.x > 0)
+        {
+            sr.flipX = false;
+        }
     }
 }
