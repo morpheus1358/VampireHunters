@@ -337,8 +337,8 @@ MonoBehaviour:
   - {fileID: 7558262870196854362, guid: c0113c5644386304fbb93f206cccfcd2, type: 3}
   - {fileID: 6792279347067170954, guid: a5a2e000d00f5b8468cd6c5320de522c, type: 3}
   - {fileID: 5019501099091166273, guid: 179f36d3ba551c442bb9132d27db1e3c, type: 3}
-  propChance: 0.03
-  maxPropsPerChunk: 25
+  propChance: 0.02
+  maxPropsPerChunk: 20
   propsParent: {fileID: 2079185100}
   propJitter: 0.2
 --- !u!4 &1181840090
