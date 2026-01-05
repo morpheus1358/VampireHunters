@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public float moveSpeed = 5f;
     public Vector2 moveDir;
+    public float lastHorizontalVector;
+    public float lastVerticalVector;
     // Start is called before the first frame update
     void Start()
     {
